@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface BookRepository extends MongoRepository<Book,Integer> {
 
+    Optional<Book> findByAuthorName(String authorName);
+
     @Query("{authorName: ?0, bookName: ?1}")
     Optional<Book> getBooksByAuthorAndName(String authorName, String bookName);
 

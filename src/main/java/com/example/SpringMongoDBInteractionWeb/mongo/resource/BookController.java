@@ -58,4 +58,13 @@ public class BookController {
         List<Book> resultBook= repository.getBooksBySomeCriteria(authorName,bookName,price);
         return resultBook;
     }
+
+
+    @GetMapping("/findBookBasedOnAuthorName/{authorName}")
+    public Optional<Book> getBookByAuthorName(@PathVariable String authorName)
+    {
+        Optional<Book> book= repository.findByAuthorName(authorName);
+        return book;
+    }
+
 }
