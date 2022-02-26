@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "/application-test.properties")
+@SpringBootTest
 public class FileManageServiceDefinitionsTest {
 
     @Mock
@@ -51,7 +53,7 @@ public class FileManageServiceDefinitionsTest {
 
     @Test
     void testUploadFile() throws Exception{
-         fileName="C:\\Users\\saicharan.velury\\Documents\\Process_learning_docs\\Training\\Upload\\Test\\xyz.txt";
+          fileName="C:\\Users\\saicharan.velury\\Documents\\Process_learning_docs\\Training\\Upload\\Test\\xyz.txt";
         File file=new File(fileName);
         FileInputStream fis=new FileInputStream(file);
         MockMultipartFile multipartFile = new MockMultipartFile(

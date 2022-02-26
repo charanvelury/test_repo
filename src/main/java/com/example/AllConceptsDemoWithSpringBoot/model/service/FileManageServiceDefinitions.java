@@ -3,6 +3,7 @@ package com.example.AllConceptsDemoWithSpringBoot.model.service;
 import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.SuccessfulFileUploadResponse;
 import com.example.AllConceptsDemoWithSpringBoot.model.Dto.FileData;
 import com.example.AllConceptsDemoWithSpringBoot.repository.FileRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,9 @@ import java.util.UUID;
 public class FileManageServiceDefinitions implements FileManageService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileManageServiceDefinitions.class);
-    //@Value("${project.file.upload.directory.location}")
-    private String uploadDirectoryLocation="C:\\Users\\saicharan.velury\\Documents\\Process_learning_docs\\Training\\Upload";
+    @Value("${project.file.upload.directory.location}")
+    private String uploadDirectoryLocation;
+    //private String uploadDirectoryLocation="/usr/share/poc_project_files";
 
     @Autowired
     private FileRepository fileRepo;
