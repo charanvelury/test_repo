@@ -1,5 +1,7 @@
 package com.example.AllConceptsDemoWithSpringBoot.service;
 
+import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.FileBasedOnIdResponse;
+import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.FileDataResponse;
 import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.SuccessfulFileUploadResponse;
 import com.example.AllConceptsDemoWithSpringBoot.model.Dto.FileData;
 import com.example.AllConceptsDemoWithSpringBoot.model.service.FileManageServiceDefinitions;
@@ -52,7 +54,7 @@ public class FileManageServiceDefinitionsTest {
     }*/
 
     @Test
-    void testUploadFile() throws Exception{
+    void testUploadFileService() throws Exception{
           fileName="C:\\Users\\saicharan.velury\\Documents\\Process_learning_docs\\Training\\Upload\\Test\\xyz.txt";
         File file=new File(fileName);
         FileInputStream fis=new FileInputStream(file);
@@ -66,11 +68,12 @@ public class FileManageServiceDefinitionsTest {
         resultSavedObject.setId(UUID.fromString("09878ba6-7cd2-477d-badf-81973cb80a1b"));
         resultSavedObject.setFileUploadTime(new Date());
         resultSavedObject.setFileUploadedByUser("Saicharan");
+        resultSavedObject.setContent("ABC Content");
         when(fileRepo.save(any())).thenReturn(resultSavedObject);
 
         SuccessfulFileUploadResponse response=fileManageServiceDefinitions.uploadFile(multipartFile,"Saicharan");
 
-        assertEquals("09878ba6-7cd2-477d-badf-81973cb80a1b",response.getFileId().toString());
+        assertEquals("09878ba6-7cd2-477d-badf-81973cb80a1b",response.getId().toString());
     }
 
     @Test
@@ -84,7 +87,7 @@ public class FileManageServiceDefinitionsTest {
         resultObject.setFileUploadedByUser("Saicharan");
         expectedResultList.add(resultObject);
         when(fileRepo.findByFileUploadedByUser(anyString())).thenReturn(expectedResultList);
-         List<FileData> actualResultList = fileManageServiceDefinitions.getFilesBasedOnUploader("Saicharan");
+         List<FileDataResponse> actualResultList = fileManageServiceDefinitions.getFilesBasedOnUploader("Saicharan");
          assertEquals(expectedResultList.size(),actualResultList.size());
          assertEquals(expectedResultList.get(0).getId(),actualResultList.get(0).getId());
     }
@@ -100,7 +103,7 @@ public class FileManageServiceDefinitionsTest {
         expectedResultObject.setFileUploadedByUser("Saicharan");
        // expectedResultList.add(resultObject);
         when(fileRepo.findById(any())).thenReturn(Optional.of(expectedResultObject));
-        Optional<FileData> actualResultFileObject = fileManageServiceDefinitions.getFileBasedOnFileId(UUID.fromString("09878ba6-7cd2-477d-badf-81973cb80a1b"));
+        Optional<FileBasedOnIdResponse> actualResultFileObject = fileManageServiceDefinitions.getFileBasedOnFileId(UUID.fromString("09878ba6-7cd2-477d-badf-81973cb80a1b"));
 
         assertEquals(expectedResultObject.getFileName(),expectedResultObject.getFileName());
     }

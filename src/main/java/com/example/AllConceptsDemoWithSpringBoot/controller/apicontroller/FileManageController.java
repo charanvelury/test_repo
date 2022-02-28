@@ -1,5 +1,8 @@
 package com.example.AllConceptsDemoWithSpringBoot.controller.apicontroller;
 
+import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.FileBasedOnIdResponse;
+import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.FileDataResponse;
+import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.FilesBasedOnUserResponse;
 import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.SuccessfulFileUploadResponse;
 import com.example.AllConceptsDemoWithSpringBoot.model.Dto.FileData;
 import com.example.AllConceptsDemoWithSpringBoot.model.Exceptions.*;
@@ -45,17 +48,22 @@ public class FileManageController {
     }
 
     @GetMapping("/findFilesBasedOnUploaderName/{uploader}")
-    public List<FileData> getFilesBasedOnUploaderName(@PathVariable String uploader)
+    public FilesBasedOnUserResponse getFilesBasedOnUploaderName(@PathVariable String uploader)
     {
-        List<FileData>  fileDataList=fileManageServiceDefinitions.getFilesBasedOnUploader(uploader);
+        List<FileDataResponse>  fileDataList=fileManageServiceDefinitions.getFilesBasedOnUploader(uploader);
         if(fileDataList.isEmpty() && fileDataList.size()==0)
             throw new UserNameNotFoundInResponseException("404 Not Found-  The reason is the user named "+ uploader+"  is Not Found in the response file list");
 
-        return fileDataList;
+        FilesBasedOnUserResponse filesBasedOnUserResponse = new FilesBasedOnUserResponse();
+        filesBasedOnUserResponse.setStatus("success");
+        filesBasedOnUserResponse.setUsername(uploader);
+        filesBasedOnUserResponse.setFiles(fileDataList);
+
+        return filesBasedOnUserResponse;
     }
 
     @GetMapping("/findFileBasedOnId/{fileId}")
-    public Optional<FileData> getFileBasedOnId(@PathVariable String fileId)
+    public Optional<FileBasedOnIdResponse> getFileBasedOnId(@PathVariable String fileId)
     {
         UUID uuid=null;
         try{
@@ -64,9 +72,11 @@ public class FileManageController {
         } catch (IllegalArgumentException exception){
             throw new InvalidFileUuidFormatException("400 Bad Request- The reason is the input file Id  "+fileId+"  is NOT in  UUID FORMAT.");
         }
-        Optional<FileData> fileObject= fileManageServiceDefinitions.getFileBasedOnFileId(uuid);
+        Optional<FileBasedOnIdResponse> fileObject= fileManageServiceDefinitions.getFileBasedOnFileId(uuid);
         if(fileObject.isEmpty())
             throw new FileIdNotFoundInResponseException("404 Not Found- The reason is there is no matching file record present for the provided input file Id  "+fileId+"");
+
+
         return fileObject;
     }
    /*@GetMapping("/findFilesBasedOn/{fileName}")

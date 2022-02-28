@@ -17,4 +17,5 @@ public class FileData {
     private String fileName;
     private String fileUploadedByUser;
     private Date fileUploadTime;
+    private String content;
 }

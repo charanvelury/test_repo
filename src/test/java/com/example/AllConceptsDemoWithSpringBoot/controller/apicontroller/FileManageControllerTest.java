@@ -1,5 +1,6 @@
 package com.example.AllConceptsDemoWithSpringBoot.controller.apicontroller;
 
+import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.FileBasedOnIdResponse;
 import com.example.AllConceptsDemoWithSpringBoot.model.ApiResponse.SuccessfulFileUploadResponse;
 import com.example.AllConceptsDemoWithSpringBoot.model.Dto.FileData;
 import com.example.AllConceptsDemoWithSpringBoot.model.Exceptions.FileIdNotFoundInResponseException;
@@ -69,17 +70,16 @@ public class FileManageControllerTest {
         filedata.setFileName("abc.txt");
         filedata.setId(UUID.fromString("a8b495bf-0db5-433c-ae10-bf1cc9a3de2d"));
         filedata.setFileUploadTime(new Date());
-        filedata.setFileUploadedByUser("saicharan");
+        filedata.setFileUploadedByUser("sai");
 
     }
 
     @Test
     public void testUploadFile() throws Exception {
         SuccessfulFileUploadResponse successResponseData = new SuccessfulFileUploadResponse();
-        successResponseData.setFileName("xyz");
-        successResponseData.setFileId(UUID.fromString("09878ba6-7cd2-477d-badf-81973cb80a1b"));
-        successResponseData.setFileUploadTime(new Date());
-        successResponseData.setFileUploadedByUser("Saicharan");
+        successResponseData.setStatus("success");
+        successResponseData.setId(UUID.fromString("09878ba6-7cd2-477d-badf-81973cb80a1b"));
+
 
         Mockito.when(fileManageService.uploadFile(any(), anyString())).thenReturn(successResponseData);
         String fileName = "sample-file-mock.txt";
@@ -88,8 +88,8 @@ public class FileManageControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.multipart("/upload-file")
                         .file(sampleFile).param("username","saicharan").contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.fileId").value("09878ba6-7cd2-477d-badf-81973cb80a1b"))
-                .andExpect(jsonPath("$.fileName").value("xyz"));
+                .andExpect(status().isOk()).andExpect(jsonPath("$.id").value("09878ba6-7cd2-477d-badf-81973cb80a1b"))
+                .andExpect(jsonPath("$.status").value("success"));
 
 
     }
@@ -123,11 +123,14 @@ public class FileManageControllerTest {
     @Test
     public void testGetFileBasedOnId() throws Exception {
 
-
-        Mockito.when(fileManageService.getFileBasedOnFileId(any())).thenReturn(Optional.of(filedata));
+       FileBasedOnIdResponse fileBasedOnIdResponse=new FileBasedOnIdResponse();
+        fileBasedOnIdResponse.setSuccess(true);
+        fileBasedOnIdResponse.setUsername(filedata.getFileUploadedByUser());
+        fileBasedOnIdResponse.setFilename(filedata.getFileName());
+        Mockito.when(fileManageService.getFileBasedOnFileId(any())).thenReturn(Optional.of(fileBasedOnIdResponse));
         mockMvc.perform(MockMvcRequestBuilders.get("/findFileBasedOnId/{fileId}","a8b495bf-0db5-433c-ae10-bf1cc9a3de2d").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").accept(MediaType.APPLICATION_JSON))
 
-                .andExpect(status().isOk()).andExpect(jsonPath("$.fileName").value("abc.txt")).andExpect(jsonPath("$.fileUploadedByUser").value("saicharan"));
+                .andExpect(status().isOk()).andExpect(jsonPath("$.filename").value("abc.txt")).andExpect(jsonPath("$.username").value("sai"));
 
     }
 
@@ -144,7 +147,7 @@ public class FileManageControllerTest {
 
     @Test
     public void testGetFileBasedOnIdNotFound_FileIdNotFoundInResponseException() throws Exception {
-        Optional<FileData> emptyFileData = Optional.empty();
+        Optional<FileBasedOnIdResponse> emptyFileData = Optional.empty();
         Mockito.when(fileManageService.getFileBasedOnFileId(any())).thenReturn(emptyFileData);
         mockMvc.perform(MockMvcRequestBuilders.get("/findFileBasedOnId/{fileId}", "c1bcfc50-94c5-11ec-b909-0242ac120002").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").accept(MediaType.APPLICATION_JSON))
 

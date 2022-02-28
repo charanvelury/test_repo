@@ -8,7 +8,9 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class SuccessfulFileUploadResponse {
-        private String status;
-        private UUID id;
-   }
+public class FileDataResponse {
+private String filename;
+private Date uploadTime;
+private UUID id;
+
+}

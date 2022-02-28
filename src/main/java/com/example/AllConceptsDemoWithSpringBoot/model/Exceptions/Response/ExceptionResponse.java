@@ -12,8 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ExceptionResponse {
 
-    private Date timestamp;
-    private String message;
-    private String details;
+    private boolean success=false;
+    private String errorMsg;
 
 }
