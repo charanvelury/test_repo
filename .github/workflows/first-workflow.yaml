@@ -10,7 +10,6 @@ jobs:
       - name: Multiline Command
         run: |
           java -version
-          java -jar F:\My_jars\Test.jar
   parallel-job-macos:
     runs-on: macos-latest
     steps:
