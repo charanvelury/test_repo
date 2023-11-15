@@ -21,5 +21,5 @@ jobs:
     steps:
       - name: echo a string
         run: Write-Output "Windows String"
-      - name: Show files in directory
+      - name: Show files in the directory
         run: dir
