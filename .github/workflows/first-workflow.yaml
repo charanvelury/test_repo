@@ -2,7 +2,7 @@ name: First Workflow
 on: [push]
 
 jobs:
-  run-shell-commands:
+  run-shell-command:
     runs-on: ubuntu-latest
     steps:
       - name: echo a string
@@ -10,14 +10,14 @@ jobs:
       - name: Multiline Command
         run: |
           java -version
-  parallel-job-macos:
+  parallel-jobs-macos:
     runs-on: macos-latest
     steps:
       - name: echo a parallel job
         run: echo "Hello This is parallel job"
   dependant-job:
     runs-on: windows-latest
-    needs: run-shell-commands
+    needs: run-shell-command
     steps:
       - name: echo a string
         run: Write-Output "Windows String"
