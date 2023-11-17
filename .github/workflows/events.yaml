@@ -1,7 +1,9 @@
 name: Repository Events
 on:
-  pull_request:
-    types: [opened, edited, closed]
+  push:
+    branches:
+      - main
+      - "feature/*"
 
 jobs:
   checkout-test:
