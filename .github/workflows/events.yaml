@@ -1,8 +1,7 @@
 name: Repository Events
 on:
-  push:
   pull_request:
-    types: [opened, closed]
+    types: [opened, assigned, closed]
 
 jobs:
   checkout-test:
