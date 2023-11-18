@@ -24,11 +24,7 @@ on:
         description: A boolean option
         required: false
         type: boolean
-      environment:
-        description: "Environment"
-        type: environment
-        required: true
-
+     
 jobs:
   log-info:
     runs-on: ubuntu-latest
