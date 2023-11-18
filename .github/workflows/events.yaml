@@ -4,9 +4,7 @@ on:
     branches:
       - main
       - "feature/*"
-    paths:
-      - "abc.txt"    
-
+   
 jobs:
   checkout-test:
     runs-on: ubuntu-latest
